@@ -8,10 +8,10 @@ long double GetTime() {
     return (long double)clock() / CLOCKS_PER_SEC;
 }
 
-bool test_completed_transactions = false;
-bool test_orders = false;
-bool test_orderbook = false;
-bool test_scanner = false;
+bool test_completed_transactions = true;
+bool test_orders = true;
+bool test_orderbook = true;
+bool test_scanner = true;
 bool test_backtest = true;
 
 const std::string path_orderbook = "../Data/orderbooks_eth_depth50.csv";
