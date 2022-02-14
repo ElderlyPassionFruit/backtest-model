@@ -1,0 +1,1 @@
+add_library(backtest STATIC completed_transaction.cpp order.cpp orderbook.cpp scanner.cpp backtest.cpp)
