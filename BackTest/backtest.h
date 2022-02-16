@@ -59,6 +59,8 @@ public:
     uint64_t GetCancelLatency() const;
     uint64_t GetCallFrequency() const;
     uint64_t GetLastCall() const;
+    uint64_t GetTotalMarketCash() const;
+    uint64_t GetTotalMarketAsset() const;
     void PrintOrderBook(bool print_name = true) const;
 
 private:

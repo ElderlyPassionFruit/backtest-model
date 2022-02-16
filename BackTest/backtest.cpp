@@ -285,3 +285,19 @@ uint64_t BackTest::GetCallFrequency() const {
 uint64_t BackTest::GetLastCall() const {
     return last_call_;
 }
+
+uint64_t BackTest::GetTotalMarketCash() const {
+    uint64_t cash = 0;
+    for (const auto& order : GetBid()) {
+        cash += order->GetRemainingVolume() * order->GetPriceLimit();
+    }
+    return cash;
+}
+
+uint64_t BackTest::GetTotalMarketAsset() const {
+    uint64_t asset = 0;
+    for (const auto& order : GetAsk()) {
+        asset += order->GetRemainingVolume();
+    }
+    return asset;
+}

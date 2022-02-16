@@ -123,6 +123,9 @@ uint64_t OrderBook::AddNewOrder() {
 
 void OrderBook::RemoveOrder(const uint64_t& order_id) {
     auto order = static_cast<LimitOrder*>(all_user_orders_[order_id].get());
+    if (order->IsClosed()) {
+        return;
+    }
     order->CancelOrder();
     auto ptr = std::make_shared<LimitOrder>(order->GetOrderId(), order->GetSubmitTimestamp(),
                                             order->GetOrderType(), order->GetVolume(),
@@ -200,16 +203,19 @@ void OrderBook::Print(bool print_name) const {
     if (print_name) {
         std::cerr << "OrderBook:" << std::endl;
     }
-    std::cerr << "ask = " << std::endl;
-    for (const auto& order : GetAsk()) {
-        order->Print(false);
-    }
-    std::cerr << "bid = " << std::endl;
-    for (const auto& order : GetBid()) {
-        order->Print(false);
-    }
-    std::cerr << "market_transactions = " << std::endl;
-    for (const auto& transaction : GetMarketTransactions()) {
-        transaction->Print(false);
+    // std::cerr << "ask = " << std::endl;
+    // for (const auto& order : GetAsk()) {
+    //     order->Print(false);
+    // }
+    // std::cerr << "bid = " << std::endl;
+    // for (const auto& order : GetBid()) {
+    //     order->Print(false);
+    // }
+    // std::cerr << "market_transactions = " << std::endl;
+    // for (const auto& transaction : GetMarketTransactions()) {
+    //     transaction->Print(false);
+    // }
+    for (const auto& order : all_user_orders_) {
+        order->Print(true);
     }
 }
