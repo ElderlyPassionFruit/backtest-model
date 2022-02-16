@@ -103,6 +103,14 @@ uint64_t BackTest::ProcessTimeInterval(const uint64_t& step) {
     return current_timestamp_;
 }
 
+uint64_t BackTest::ProcessBeforeUnlock() {
+    if (last_call_ + call_frequency_ <= current_timestamp_) {
+        return current_timestamp_;
+    } else {
+        return BackTest::ProcessTimeInterval(last_call_ + call_frequency_ - current_timestamp_);
+    }
+}
+
 TBase BackTest::GetOrderInfo(const uint64_t& order_id) const {
     return orderbook_.GetOrderInfo(order_id);
 }
@@ -199,7 +207,7 @@ uint64_t BackTest::GetOrderPosition(const uint64_t& order_id) const {
     } else if (order->GetOrderType() == BID) {
         return GetOrder(GetBid(), order);
     } else {
-        throw std::runtime_error("BackTest::GetOrderPosition - Incorrect order_type."); 
+        throw std::runtime_error("BackTest::GetOrderPosition - Incorrect order_type.");
     }
 }
 
@@ -238,4 +246,42 @@ ForPNL BackTest::GetPNL() const {
 
 void BackTest::PrintOrderBook(bool print_name) const {
     orderbook_.Print(print_name);
+}
+
+uint64_t BackTest::GetBestBid() const {
+    if (GetBid().empty()) {
+        throw std::runtime_error("BackTest::GetBestBid - orderbook_.bid_ have to be non empty.");
+    }
+    return (*GetBid().begin())->GetPriceLimit();
+}
+
+uint64_t BackTest::GetBestAsk() const {
+    if (GetAsk().empty()) {
+        throw std::runtime_error("BackTest::GetBestAsk - orderbook_.ask_ have to be non empty.");
+    }
+    return (*GetAsk().begin())->GetPriceLimit();
+}
+
+uint64_t BackTest::GetLimitOrderFee() const {
+    return limit_order_fee_;
+}
+
+uint64_t BackTest::GetMarketOrderFee() const {
+    return market_order_fee_;
+}
+
+uint64_t BackTest::GetPostLatency() const {
+    return post_latency_;
+}
+
+uint64_t BackTest::GetCancelLatency() const {
+    return cancel_latency_;
+}
+
+uint64_t BackTest::GetCallFrequency() const {
+    return call_frequency_;
+}
+
+uint64_t BackTest::GetLastCall() const {
+    return last_call_;
 }

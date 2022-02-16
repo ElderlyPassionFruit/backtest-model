@@ -123,6 +123,7 @@ uint64_t OrderBook::AddNewOrder() {
 
 void OrderBook::RemoveOrder(const uint64_t& order_id) {
     auto order = static_cast<LimitOrder*>(all_user_orders_[order_id].get());
+    order->CancelOrder();
     auto ptr = std::make_shared<LimitOrder>(order->GetOrderId(), order->GetSubmitTimestamp(),
                                             order->GetOrderType(), order->GetVolume(),
                                             order->GetPriceLimit());
@@ -131,7 +132,7 @@ void OrderBook::RemoveOrder(const uint64_t& order_id) {
     } else if (ptr->GetOrderType() == BID) {
         bid_.erase(ptr);
     } else {
-        throw std::runtime_error("OrderBook::RemoveOrder - Incorrect order_type."); 
+        throw std::runtime_error("OrderBook::RemoveOrder - Incorrect order_type.");
     }
 }
 

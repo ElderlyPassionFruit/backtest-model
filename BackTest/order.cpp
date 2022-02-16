@@ -116,11 +116,21 @@ void MarketOrder::Print(bool print_name) const {
 LimitOrder::LimitOrder(const uint64_t& order_id, const uint64_t& submit_timestamp,
                        const OrderTypes& order_type, const uint64_t& volume,
                        const uint64_t& price_limit)
-    : BaseOrder(order_id, submit_timestamp, order_type, volume), price_limit_(price_limit) {
+    : BaseOrder(order_id, submit_timestamp, order_type, volume),
+      price_limit_(price_limit),
+      is_canceled_(false) {
 }
 
 uint64_t LimitOrder::GetPriceLimit() const {
     return price_limit_;
+}
+
+void LimitOrder::CancelOrder() {
+    is_canceled_ = true;
+}
+
+bool LimitOrder::IsCanceled() const {
+    return is_canceled_;
 }
 
 void LimitOrder::Print(bool print_name) const {
@@ -131,7 +141,8 @@ void LimitOrder::Print(bool print_name) const {
               << " submit_timestamp = " << GetSubmitTimestamp()
               << " order_type = " << ToString(GetOrderType()) << " volume = " << GetVolume()
               << " remaining_volume = " << GetRemainingVolume()
-              << " price_limit = " << GetPriceLimit() << std::endl;
+              << " price_limit = " << GetPriceLimit() << " is_canceled = " << IsCanceled()
+              << std::endl;
     std::cerr << "filling: count = " << GetFilling().size() << std::endl;
     for (const auto& completed_transaction : GetFilling()) {
         completed_transaction->Print(false);

@@ -34,6 +34,7 @@ public:
              uint64_t call_frequency = 100);
 
     uint64_t ProcessTimeInterval(const uint64_t& step);
+    uint64_t ProcessBeforeUnlock();
     TBase GetOrderInfo(const uint64_t& order_id) const;
     std::optional<uint64_t> SendLimitOrder(const OrderTypes& order_type, const uint64_t& volume,
                                            const uint64_t& price_limit);
@@ -50,6 +51,14 @@ public:
     std::pair<TAskLimitSet, TBidLimitSet> GetOrderBook() const;
     uint64_t GetOrderPosition(const uint64_t& order_id) const;
     ForPNL GetPNL() const;
+    uint64_t GetBestBid() const;
+    uint64_t GetBestAsk() const;
+    uint64_t GetLimitOrderFee() const;
+    uint64_t GetMarketOrderFee() const;
+    uint64_t GetPostLatency() const;
+    uint64_t GetCancelLatency() const;
+    uint64_t GetCallFrequency() const;
+    uint64_t GetLastCall() const;
     void PrintOrderBook(bool print_name = true) const;
 
 private:

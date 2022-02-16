@@ -53,10 +53,13 @@ public:
     LimitOrder(const uint64_t& order_id, const uint64_t& submit_timestamp,
                const OrderTypes& order_type, const uint64_t& volume, const uint64_t& price_limit);
     uint64_t GetPriceLimit() const;
+    void CancelOrder();
+    bool IsCanceled() const;
     void Print(bool print_name = true) const override;
 
 private:
     uint64_t price_limit_;
+    bool is_canceled_;
 };
 
 using TBase = std::shared_ptr<BaseOrder>;
